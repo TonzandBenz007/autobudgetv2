@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>หมวดหมู่ค่าใช้จ่าย</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+  
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f5f7fa;
+    margin: 30px;
+  }
+  .container {
+    max-width: 900px;
+    background: white;
+    border-radius: 10px;
+    padding: 25px 30px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.05);
+  }
+  h2 {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #222;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 35px;
+  }
+  .category {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.05);
+  }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+  }
+  .title svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+  .amount {
+    font-weight: 700;
+    font-size: 16px;
+    color: #222;
+  }
+  .amount small {
+    font-weight: 400;
+    font-size: 13px;
+    color: #666;
+    margin-left: 5px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e4e4e4;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .progress {
+    height: 100%;
+    border-radius: 8px;
+  }
+  .status {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .status .percent {
+    color: #666;
+  }
+  .status .state {
+    font-weight: 600;
+  }
+
+  /* สีสถานะ */
+  .orange {
+    color: #fbb040;
+  }
+  .green {
+    color: #35b27e;
+  }
+  .red {
+    color: #ff4c4c;
+  }
+
+  /* สี progress bar */
+  .progress.orange {
+    background-color: #fbb040;
+  }
+  .progress.green {
+    background-color: #35b27e;
+  }
+  .progress.red {
+    background-color: #ff4c4c;
+  }
+
+</style>
+</head>
+<body>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>หมวดหมู่ค่าใช้จ่าย AutoBudget</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2dce89;
+    }
+
+    .logo span {
+      color: #1c1c1c;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2dce89;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background-color: #f0f1f3;
+      padding: 12px 20px;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .navbar-item {
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .navbar-item.active {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      color: #2dce89;
+    }
+
+    .transaction-list {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .transaction-list h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 14px 0;
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .transaction-icon {
+      font-size: 20px;
+    }
+
+    .transaction-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+    }
+
+    .income {
+      color: #2dce89;
+    }
+
+    .expense {
+      color: #ff4d4f;
+    }
+
+    .no-transactions {
+      text-align: center;
+      color: #aaa;
+      padding: 40px 0;
+    }
+  </style>
+</head>
+</head>
+<body> 
+<!-- Header -->
+  <div class="header-top">
+    <div class="logo">Auto<span>Budget</span><br><small style="font-size: 14px; font-weight: normal;">จัดการงบประมาณอัตโนมัติ</small></div>
+     <a href="setting.html" class="btn btn-settings" style="text-decoration: none;">
+  ⚙️ ตั้งค่า
+</a>
+</div>
+  </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Menu Hover Effect</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #111; /* navbar background */
+}
+
+nav a {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #0ef;
+}
+
+nav a span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #0ef;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover span {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="dashboard.html">dashboard<span></span></a>
+    <a href="transactions.html">รายการ<span></span></a>
+    <a href="Expense categories.html">หมวดหมู่ค่าใช้จ่าย<span></span></a>
+    <a href="Spending.html">การใช้จ่ายในสัปดาห์นี้<span></span></a>
+    <a href="notifications.html" >แจ้งเตือน<span></span></a>
+</nav>
+
+</body>
+</html>
+
+
+
+  
+
+</body>
+</html>
+
+  <div class="container">
+    <h2>หมวดหมู่ค่าใช้จ่าย</h2>
+    <div class="grid">
+
+      <!-- อาหาร -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#e28010;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2h-4c-1.104 0-2 .896-2 2v14a2 2 0 004 0V6h2v12a4 4 0 01-8 0V4c0-1.104.896-2 2-2h4a2 2 0 010 4h-2v12a4 4 0 008 0V4c0-1.104-.896-2-2-2z"/></svg>
+          🍔อาหาร
+          </div>
+          <div class="amount">฿8,500 <small>/ 12,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress orange" style="width:70.8%"></div></div>
+        <div class="status">
+          <span class="percent">70.8% ใช้ไปแล้ว</span>
+          <span class="state orange">ใกล้เต็ม</span>
+        </div>
+      </div>
+
+      <!-- ช้อปปิ้ง -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#9753ff;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a2 2 0 002 2h6a2 2 0 002-2v-4h-4v-2h4v-4h-6v4h-2v4z"/></svg>
+            ช้อปปิ้ง
+          </div>
+          <div class="amount">฿6,200 <small>/ 8,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress orange" style="width:77.5%"></div></div>
+        <div class="status">
+          <span class="percent">77.5% ใช้ไปแล้ว</span>
+          <span class="state orange">ใกล้เต็ม</span>
+        </div>
+      </div>
+
+      <!-- ค่าเดินทาง -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#1a90ff;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l9-9 9 9h-6v9h-6v-9z"/></svg>
+            ค่าเดินทาง
+          </div>
+          <div class="amount">฿3,800 <small>/ 5,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress orange" style="width:76%"></div></div>
+        <div class="status">
+          <span class="percent">76.0% ใช้ไปแล้ว</span>
+          <span class="state orange">ใกล้เต็ม</span>
+        </div>
+      </div>
+
+      <!-- ค่าบ้าน -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#888;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18h-6v-5H3v-4h3v-5h6z"/></svg>
+            ค่าบ้าน
+          </div>
+          <div class="amount">฿9,500 <small>/ 10,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress red" style="width:95%"></div></div>
+        <div class="status">
+          <span class="percent">95.0% ใช้ไปแล้ว</span>
+          <span class="state red">เกิน!</span>
+        </div>
+      </div>
+
+      <!-- เครื่องดื่ม -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#f7a600;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8v4h-8z"/></svg>
+            เครื่องดื่ม
+          </div>
+          <div class="amount">฿2,100 <small>/ 3,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress orange" style="width:70%"></div></div>
+        <div class="status">
+          <span class="percent">70.0% ใช้ไปแล้ว</span>
+          <span class="state orange">ใกล้เต็ม</span>
+        </div>
+      </div>
+
+      <!-- บันเทิง -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#f6539e;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16h6v2H9zm-2-7h10v2H7z"/></svg>
+            บันเทิง
+          </div>
+          <div class="amount">฿1,500 <small>/ 2,500</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress green" style="width:60%"></div></div>
+        <div class="status">
+          <span class="percent">60.0% ใช้ไปแล้ว</span>
+          <span class="state green">ปกติ</span>
+        </div>
+      </div>
+
+      <!-- สุขภาพ -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#ff6666;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/></svg>
+            สุขภาพ
+          </div>
+          <div class="amount">฿800 <small>/ 2,000</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress green" style="width:40%"></div></div>
+        <div class="status">
+          <span class="percent">40.0% ใช้ไปแล้ว</span>
+          <span class="state green">ปกติ</span>
+        </div>
+      </div>
+
+      <!-- การศึกษา -->
+      <div class="category">
+        <div class="top-row">
+          <div class="title" style="color:#63b600;">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>
+            การศึกษา
+          </div>
+          <div class="amount">฿1,200 <small>/ 1,500</small></div>
+        </div>
+        <div class="progress-bar"><div class="progress orange" style="width:80%"></div></div>
+        <div class="status">
+          <span class="percent">80.0% ใช้ไปแล้ว</span>
+          <span class="state orange">ใกล้เต็ม</span>
+        </div>
+      </div>
+
+  
+
+
+    </div>
+  </div>
+</body>
+</html>

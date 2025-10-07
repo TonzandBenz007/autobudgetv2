@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>หมวดหมู่ค่าใช้จ่าย</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+  
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: #f5f7fa;
+    margin: 30px;
+  }
+  .container {
+    max-width: 900px;
+    background: white;
+    border-radius: 10px;
+    padding: 25px 30px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.05);
+  }
+  h2 {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #222;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 35px;
+  }
+  .category {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.05);
+  }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+  }
+  .title svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+  .amount {
+    font-weight: 700;
+    font-size: 16px;
+    color: #222;
+  }
+  .amount small {
+    font-weight: 400;
+    font-size: 13px;
+    color: #666;
+    margin-left: 5px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e4e4e4;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .progress {
+    height: 100%;
+    border-radius: 8px;
+  }
+  .status {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .status .percent {
+    color: #666;
+  }
+  .status .state {
+    font-weight: 600;
+  }
+
+  /* สีสถานะ */
+  .orange {
+    color: #e7e5e2;
+  }
+  .green {
+    color: #35b27e;
+  }
+  .red {
+    color: #ff4c4c;
+  }
+
+  /* สี progress bar */
+  .progress.orange {
+    background-color: #fbb040;
+  }
+  .progress.green {
+    background-color: #35b27e;
+  }
+  .progress.red {
+    background-color: #ff4c4c;
+  }
+
+</style>
+</head>
+<body>
+ <head>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>การใช้จ่ายทั้งหมด - รายเดือน</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+<style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      padding: 20px;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+    }
+    .back-arrow {
+      margin-right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .tab-switch {
+      display: flex;
+      justify-content: center;
+      background: linear-gradient(to right, #15b1cc, #d6d3ce);
+      padding: 20px;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .tab {
+      padding: 10px 25px;
+      background-color: transparent;
+      color: white;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0 5px;
+    }
+    .active-tab {
+      background-color: white;
+      color: #ff6a00;
+    }
+    .summary-card {
+      background-color: white;
+      margin: 20px;
+      border-radius: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      padding: 20px;
+      position: relative;
+    }
+    .summary-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .summary-month {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: default;
+    }
+    .calendar-button {
+      width: 30px;
+      height: 30px;
+      background-color: #f3f4f6;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .calendar-button:hover {
+      background-color: #e5e7eb;
+    }
+    .calendar-button img {
+      width: 16px;
+      height: 16px;
+    }
+    .summary-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .summary-item {
+      text-align: center;
+    }
+    .summary-item div:first-child {
+      color: #555;
+      font-size: 14px;
+    }
+    .summary-item div:last-child {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .bar-chart {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      align-items: flex-end;
+    }
+    .bar {
+      width: 20px;
+      height: 100px;
+      background-color: #eee;
+      border-radius: 10px;
+    }
+    .bar.filled {
+      background-color: #22c55e;
+    }
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 10px;
+      color: #666;
+    }
+    .categories {
+      padding: 0 20px 40px;
+    }
+    .category {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .category-icon {
+      display: flex;
+      align-items: center;
+    }
+    .icon-circle {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    .green {
+      background-color: #22c55e;
+    }
+    .orange {
+      background-color: #facc15;
+    }
+    .blue {
+      background-color: #60a5fa;
+    }
+    .category-info {
+      font-size: 14px;
+      color: #555;
+    }
+    .category-total {
+      text-align: right;
+      font-size: 14px;
+    }
+    .category-total span {
+      font-weight: bold;
+    }
+
+    /* เดือนเลือกแบบ Popup */
+    .month-picker-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.3);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .month-picker {
+      background: white;
+      border-radius: 20px;
+      width: 320px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      user-select: none;
+    }
+    .month-picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .month-picker-header button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    .month-item {
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: background-color 0.3s;
+      color: #333;
+      user-select: none;
+    }
+    .month-item:hover {
+      background-color: #ffe0b3;
+    }
+    .month-item.selected {
+      background-color: #ff9c2a;
+      color: white;
+      font-weight: bold;
+    }
+    .month-picker-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-select {
+      background-color: #ff9c2a;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 10px 0;
+      font-size: 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-today {
+      color: #333;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: underline;
+      user-select: none;
+    }
+  style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2dce89;
+    }
+
+    .logo span {
+      color: #1c1c1c;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2dce89;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background-color: #f0f1f3;
+      padding: 12px 20px;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .navbar-item {
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+    }
+
+    .navbar-item.active {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      color: #2dce89;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+    }
+
+    .card .title {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .amount {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .green {
+      color: #2dce89;
+    }
+
+    .red {
+      color: #ff4d4f;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 8px;
+      margin-top: 10px;
+    }
+
+    .progress {
+      height: 8px;
+    }
+
+    .progress-red {
+      background-color: #ff4d4f;
+    }
+
+    .progress-green {
+      background-color: #2dce89;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .budget-box {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    }
+
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .budget-header h3 {
+      font-size: 20px;
+    }
+
+    .budget-header h3::before {
+      content: "📊 ";
+    }
+
+    .btn-edit {
+      padding: 6px 14px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .budget-category {
+      margin-bottom: 18px;
+    }
+
+    .budget-label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .budget-progress-bar {
+      height: 8px;
+      background-color: #e5e7eb;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .budget-progress {
+      height: 8px;
+      border-radius: 5px;
+    }
+    
+    .budget-red { background-color: #ff4d4f; }
+    .budget-orange { background-color: #fbbf24; }
+    .budget-green { background-color: #22c55e; }
+  </style>
+</head>
+<body>
+  </style>
+</head>
+<body>
+  
+  <!-- Header -->
+  <div class="header-top">
+    <div class="logo">Auto<span>Budget</span><br><small style="font-size: 14px; font-weight: normal;">จัดการงบประมาณอัตโนมัติ</small></div>
+     <a href="setting.html" class="btn btn-settings" style="text-decoration: none;">
+  ⚙️ ตั้งค่า
+</a>
+</div>
+  </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Menu Hover Effect</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #111; /* navbar background */
+}
+
+nav a {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #0ef;
+}
+
+nav a span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #0ef;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover span {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="dashboard.html">dashboard<span></span></a>
+    <a href="transactions.html">รายการ<span></span></a>
+    <a href="Expense categories.html">หมวดหมู่ค่าใช้จ่าย<span></span></a>
+    <a href="Monthly analyze.html">การใช้จ่ายในสัปดาห์นี้<span></span></a>
+    <a href="notifications.html" >แจ้งเตือน<span></span></a>
+</nav>
+
+</body>
+</html>
+
+  <div class="tab-switch">
+  <a href="Spending.html">รายสัปดาห์<span></span></a>
+  <a href="Monthly analyze.html">รายเดือน<span></span></a>
+</div>
+
+<style>
+  .tab-switch a {
+    margin-right: 20px; /* ปรับค่าตามต้องการ */
+    text-decoration: none;
+    color: #e409ad;
+  }
+</style>
+
+
+
+  <div class="summary-card">
+    <div class="summary-top">
+      <div class="summary-month" id="selected-month-display">
+        กันยายน 2568
+        <div class="calendar-button" id="open-month-picker" title="เลือกเดือน">
+          <img src="https://img.icons8.com/ios-filled/50/000000/calendar--v1.png" alt="calendar icon" />
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-bottom">
+      <div class="summary-item">
+        <div>การใช้จ่ายทั้งหมด</div>
+        <div>฿ 57.00</div>
+      </div>
+      <div class="summary-item">
+        <div>การใช้จ่ายเฉลี่ย</div>
+        <div>฿ 28.50</div>
+      </div>
+    </div>
+
+    <div class="bar-chart">
+      <div class="bar filled" style="height: 100px;"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="bar-labels">
+      <div>1-7</div>
+      <div>8-14</div>
+      <div>15-21</div>
+      <div>22-28</div>
+      <div>29-30</div>
+    </div>
+  </div>
+
+  <div class="categories">
+    <div class="category">
+      <div class="category-icon">
+        <div class="icon-circle green">🏷️</div>
+        <div class="category-info">
+          ของใช้ทั่วไป<br />2 รายการ
+        </div>
+      </div>
+      <div class="category-total">
+        ฿ 57.00<br />100%
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-icon">
+        <div class="icon-circle orange">🎭</div>
+        <div class="category-info">
+          ความบันเทิง<br />0 รายการ
+        </div>
+      </div>
+      <div class="category-total">
+        ฿ 0.00<br />0%
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-icon">
+        <div class="icon-circle blue">✅</div>
+        <div class="category-info">
+          การเงินและประกันภัย<br />0 รายการ
+        </div>
+      </div>
+      <div class="category-total">
+        ฿ 0.00<br />0%
+      </div>
+    </div>
+  </div>
+
+  <!-- Month Picker Popup -->
+  <div class="month-picker-overlay" id="month-picker-overlay">
+    <div class="month-picker" role="dialog" aria-modal="true" aria-labelledby="month-picker-title">
+      <div class="month-picker-header">
+        <button id="prev-year" aria-label="ปีที่แล้ว">&lt;</button>
+        <div id="year-display" style="font-weight:bold; font-size:18px;">2568</div>
+        <button id="next-year" aria-label="ปีถัดไป">&gt;</button>
+        <button id="close-picker" aria-label="ปิดหน้าต่าง" style="font-size: 18px; cursor:pointer; background:none; border:none;">×</button>
+      </div>
+      <div class="months-grid" id="months-grid">
+        <!-- เดือนต่าง ๆ จะถูกสร้างด้วย JavaScript -->
+      </div>
+      <div class="month-picker-footer">
+        <button class="btn-select" id="select-month-btn">เลือก</button>
+        <button class="btn-today" id="select-today-btn">เดือนนี้</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const thaiMonths = [
+      "มกราคม", "กุมภาพันธ์", "มีนาคม",
+      "เมษายน", "พฤษภาคม", "มิถุนายน",
+      "กรกฎาคม", "สิงหาคม", "กันยายน",
+      "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
+
+    const monthPickerOverlay = document.getElementById('month-picker-overlay');
+    const openMonthPickerBtn = document.getElementById('open-month-picker');
+    const closePickerBtn = document.getElementById('close-picker');
+    const prevYearBtn = document.getElementById('prev-year');
+    const nextYearBtn = document.getElementById('next-year');
+    const yearDisplay = document.getElementById('year-display');
+    const monthsGrid = document.getElementById('months-grid');
+    const selectMonthBtn = document.getElementById('select-month-btn');
+    const selectTodayBtn = document.getElementById('select-today-btn');
+    const selectedMonthDisplay = document.getElementById('selected-month-display');
+
+    let currentYear = 2568;
+    let selectedMonthIndex = 8; // กันยายน (index 8, 0-based)
+    let tempSelectedMonthIndex = selectedMonthIndex;
+    let tempYear = currentYear;
+
+    // สร้างปุ่มเดือนใน grid
+    function renderMonths() {
+      monthsGrid.innerHTML = '';
+      for (let i = 0; i < 12; i++) {
+        const monthDiv = document.createElement('div');
+        monthDiv.classList.add('month-item');
+        monthDiv.textContent = thaiMonths[i];
+        if (i === tempSelectedMonthIndex) {
+          monthDiv.classList.add('selected');
+        }
+        // disable เดือนเกินปัจจุบันถ้าปีเท่ากับปีปัจจุบัน
+        if (tempYear === 2568 && i > 8) { // กันยายน เดือน 8 index 0-based
+          monthDiv.style.color = '#aaa';
+          monthDiv.style.cursor = 'not-allowed';
+          monthDiv.onclick = null;
+        } else {
+          monthDiv.onclick = () => {
+            tempSelectedMonthIndex = i;
+            renderMonths();
+          };
+        }
+        monthsGrid.appendChild(monthDiv);
+      }
+    }
+
+    // แสดง popup
+    function openMonthPicker() {
+      tempSelectedMonthIndex = selectedMonthIndex;
+      tempYear = currentYear;
+      yearDisplay.textContent = tempYear;
+      renderMonths();
+      monthPickerOverlay.style.display = 'flex';
+    }
+
+    // ปิด popup
+    function closeMonthPicker() {
+      monthPickerOverlay.style.display = 'none';
+    }
+
+    openMonthPickerBtn.addEventListener('click', openMonthPicker);
+    closePickerBtn.addEventListener('click', closeMonthPicker);
+
+    // ปีที่แล้ว
+    prevYearBtn.addEventListener('click', () => {
+      if (tempYear > 2500) { // กำหนดปีขั้นต่ำ (จะปรับได้ตามต้องการ)
+        tempYear--;
+        // ถ้าปีเปลี่ยนและเดือนเกินปัจจุบันในปีนี้ ให้เลือกเดือนล่าสุดที่เป็นไปได้
+        if (tempYear === 2568 && tempSelectedMonthIndex > 8) {
+          tempSelectedMonthIndex = 8;
+        }
+        yearDisplay.textContent = tempYear;
+        renderMonths();
+      }
+    });
+
+    // ปีถัดไป
+    nextYearBtn.addEventListener('click', () => {
+      if (tempYear < 3000) { // กำหนดปีสูงสุด (ปรับได้)
+        tempYear++;
+        yearDisplay.textContent = tempYear;
+        renderMonths();
+      }
+    });
+
+    // เลือกเดือน
+    selectMonthBtn.addEventListener('click', () => {
+      selectedMonthIndex = tempSelectedMonthIndex;
+      currentYear = tempYear;
+      selectedMonthDisplay.childNodes[0].nodeValue = thaiMonths[selectedMonthIndex] + ' ' + currentYear;
+      closeMonthPicker();
+    });
+
+    // เลือก "เดือนนี้"
+    selectTodayBtn.addEventListener('click', () => {
+      // สมมติ เดือนนี้ กันยายน 2568 (ตามภาพ)
+      selectedMonthIndex = 8; // กันยายน
+      currentYear = 2568;
+      selectedMonthDisplay.childNodes[0].nodeValue = thaiMonths[selectedMonthIndex] + ' ' + currentYear;
+      closeMonthPicker();
+    });
+
+    // ปิด popup ถ้าคลิกรอบนอก
+    monthPickerOverlay.addEventListener('click', (e) => {
+      if (e.target === monthPickerOverlay) {
+        closeMonthPicker();
+      }
+    });
+  </script>
+</body>
+</html>
+

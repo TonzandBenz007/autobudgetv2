@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โปรไฟล์ | AutoBudget</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #ece9e6, #ffffff);
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      padding: 12px 25px;
+      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .navbar .logo img {
+      width: 28px;
+      margin-right: 10px;
+    }
+
+    .container {
+      max-width: 900px;
+      background: rgba(255,255,255,0.85);
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 8px 25px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      color: #4e54c8;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 25px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
+      color: #4e54c8;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #4e54c8;
+      box-shadow: 0 0 8px rgba(78,84,200,0.3);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-edit {
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
+    }
+
+    .btn-edit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(78,84,200,0.35);
+    }
+
+    .btn-delete {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(231,76,60,0.35);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">
+      <img src="https://img.icons8.com/emoji/48/000000/fire.png"/>
+      AutoBudget
+    </div>
+    <div>
+      <button class="btn btn-delete">🚪 ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <!-- Profile Container -->
+  <div class="container">
+    <h1>ข้อมูลโปรไฟล์</h1>
+
+    <!-- ข้อมูลพื้นฐาน -->
+    <h2>ข้อมูลพื้นฐาน</h2>
+    <div class="form-group">
+      <label>เบอร์โทรศัพท์</label>
+      <input type="text" placeholder="กรอกเบอร์โทรศัพท์">
+    </div>
+    <div class="form-group">
+      <label>ชื่อ (อีเมลหลัก)</label>
+      <input type="email" placeholder="example@email.com">
+    </div>
+
+    <!-- ข้อมูลติดต่อ -->
+    <h2>ข้อมูลติดต่อ</h2>
+    <div class="form-group">
+      <label>อีเมลสำหรับติดต่อ</label>
+      <input type="email" placeholder="contact@email.com">
+    </div>
+
+    <!-- ข้อมูลส่วนตัว -->
+    <h2>ข้อมูลส่วนตัว</h2>
+    <div class="row">
+      <div class="form-group">
+        <label>คำนำหน้านาม (ไทย)</label>
+        <select>
+          <option>นาย</option>
+          <option>นาง</option>
+          <option>นางสาว</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ชื่อ (ภาษาไทย)</label>
+        <input type="text" placeholder="ชื่อ">
+      </div>
+      <div class="form-group">
+        <label>นามสกุล (ภาษาไทย)</label>
+        <input type="text" placeholder="นามสกุล">
+      </div>
+      <div class="form-group">
+        <label>คำนำหน้า (อังกฤษ)</label>
+        <select>
+          <option>Mr.</option>
+          <option>Mrs.</option>
+          <option>Ms.</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ชื่อ (อังกฤษ)</label>
+        <input type="text" placeholder="First Name">
+      </div>
+      <div class="form-group">
+        <label>นามสกุล (อังกฤษ)</label>
+        <input type="text" placeholder="Last Name">
+      </div>
+      <div class="form-group">
+        <label>เลขบัตรประชาชน</label>
+        <input type="text" placeholder="13 หลัก">
+      </div>
+      <div class="form-group">
+        <label>วัน/เดือน/ปีเกิด</label>
+        <input type="date">
+      </div>
+    </div>
+
+    <!-- ที่อยู่ตามบัตร -->
+    <h2>ที่อยู่ตามบัตรประชาชน</h2>
+    <div class="row">
+      <div class="form-group"><label>เลขที่</label><input type="text"></div>
+      <div class="form-group"><label>หมู่</label><input type="text"></div>
+      <div class="form-group"><label>ซอย</label><input type="text"></div>
+      <div class="form-group"><label>ถนน</label><input type="text"></div>
+      <div class="form-group"><label>ตำบล</label><input type="text"></div>
+      <div class="form-group"><label>อำเภอ</label><input type="text"></div>
+      <div class="form-group"><label>จังหวัด</label><input type="text"></div>
+      <div class="form-group"><label>รหัสไปรษณีย์</label><input type="text"></div>
+    </div>
+
+    <!-- ที่อยู่ปัจจุบัน -->
+    <h2>ที่อยู่ปัจจุบัน</h2>
+    <div class="row">
+      <div class="form-group"><label>เลขที่</label><input type="text"></div>
+      <div class="form-group"><label>หมู่</label><input type="text"></div>
+      <div class="form-group"><label>ซอย</label><input type="text"></div>
+      <div class="form-group"><label>ถนน</label><input type="text"></div>
+      <div class="form-group"><label>ตำบล</label><input type="text"></div>
+      <div class="form-group"><label>อำเภอ</label><input type="text"></div>
+      <div class="form-group"><label>จังหวัด</label><input type="text"></div>
+      <div class="form-group"><label>รหัสไปรษณีย์</label><input type="text"></div>
+    </div>
+
+    <!-- ข้อมูลที่ทำงาน/สถานศึกษา -->
+    <h2>ข้อมูลที่ทำงาน / สถานศึกษา</h2>
+    <div class="row">
+      <div class="form-group"><label>เลขที่</label><input type="text"></div>
+      <div class="form-group"><label>หมู่</label><input type="text"></div>
+      <div class="form-group"><label>ซอย</label><input type="text"></div>
+      <div class="form-group"><label>ถนน</label><input type="text"></div>
+      <div class="form-group"><label>ตำบล</label><input type="text"></div>
+      <div class="form-group"><label>อำเภอ</label><input type="text"></div>
+      <div class="form-group"><label>จังหวัด</label><input type="text"></div>
+      <div class="form-group"><label>รหัสไปรษณีย์</label><input type="text"></div>
+    </div>
+
+    <!-- ปุ่ม -->
+    <button class="btn btn-edit">✏️ แก้ไขข้อมูล</button>
+    <button class="btn btn-delete">🗑️ ลบบัญชี</button>
+
+  </div>
+
+</body>
+</html>

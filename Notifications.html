@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบแจ้งเตือน</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      margin: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .header .left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .left i {
+      margin-right: 10px;
+    }
+
+    .badge {
+      background-color: #ef4444;
+      color: white;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-left: 10px;
+    }
+
+    .mark-all {
+      font-size: 14px;
+      border: 1px solid #ccc;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .notification {
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      padding: 16px;
+      margin-bottom: 15px;
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .notification i {
+      margin-right: 10px;
+      font-size: 16px;
+      margin-top: 3px;
+    }
+
+    .notification .content {
+      flex-grow: 1;
+    }
+
+    .notification .title {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .notification .time {
+      font-size: 12px;
+      color: #777;
+      margin-top: 6px;
+    }
+
+    .notification .close-btn {
+      font-size: 18px;
+      color: #888;
+      cursor: pointer;
+      margin-left: 12px;
+    }
+
+    /* Specific styles */
+    .warning {
+      background-color: #fefce8;
+      border-left: 4px solid #facc15;
+    }
+
+    .success {
+      background-color: #f0fdf4;
+      border-left: 4px solid #4ade80;
+    }
+
+    .info {
+      background-color: #f8fafc;
+      border-left: 4px solid #60a5fa;
+    }
+
+    .green-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      margin-left: 6px;
+    }
+    style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2dce89;
+    }
+
+    .logo span {
+      color: #1c1c1c;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2dce89;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background-color: #f0f1f3;
+      padding: 12px 20px;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .navbar-item {
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+    }
+
+    .navbar-item.active {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      color: #2dce89;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+    }
+
+    .card .title {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .amount {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .green {
+      color: #2dce89;
+    }
+
+    .red {
+      color: #ff4d4f;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 8px;
+      margin-top: 10px;
+    }
+
+    .progress {
+      height: 8px;
+    }
+
+    .progress-red {
+      background-color: #ff4d4f;
+    }
+
+    .progress-green {
+      background-color: #2dce89;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .budget-box {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    }
+
+    .budget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .budget-header h3 {
+      font-size: 20px;
+    }
+
+    .budget-header h3::before {
+      content: "📊 ";
+    }
+
+    .btn-edit {
+      padding: 6px 14px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .budget-category {
+      margin-bottom: 18px;
+    }
+
+    .budget-label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .budget-progress-bar {
+      height: 8px;
+      background-color: #e5e7eb;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .budget-progress {
+      height: 8px;
+      border-radius: 5px;
+    }
+    
+    .budget-red { background-color: #ff4d4f; }
+    .budget-orange { background-color: #fbbf24; }
+    .budget-green { background-color: #22c55e; }
+  </style>
+</head>
+<body>
+  </style>
+</head>
+<body>
+    
+  <!-- Header -->
+  <div class="header-top">
+    <div class="logo">Auto<span>Budget</span><br><small style="font-size: 14px; font-weight: normal;">จัดการงบประมาณอัตโนมัติ</small></div>
+    <a href="setting.html" class="btn btn-settings" style="text-decoration: none;">
+  ⚙️ ตั้งค่า
+</a>
+  </div>
+  <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Menu Hover Effect</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #111; /* navbar background */
+}
+
+nav a {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #0ef;
+}
+
+nav a span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #0ef;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover span {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="dashboard.html">dashboard<span></span></a>
+    <a href="transactions.html">รายการ<span></span></a>
+    <a href="Expense categories.html">หมวดหมู่ค่าใช้จ่าย<span></span></a>
+    <a href="Spending.html">การใช้จ่ายในสัปดาห์นี้<span></span></a>
+    <a href="notifications.html" >แจ้งเตือน<span></span></a>
+</nav>
+
+</body>
+</html>
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="left">
+          <i class="fa-solid fa-bell"></i> การแจ้งเตือน
+          <span class="badge">2</span>
+        </div>
+        <button class="mark-all">อ่านทั้งหมด</button>
+      </div>
+
+      <!-- Notification 1: Warning -->
+      <div class="notification warning">
+        <i class="fa-solid fa-triangle-exclamation" style="color: #facc15;"></i>
+        <div class="content">
+          <div class="title">งบประมาณใกล้เต็มแล้ว <span class="green-dot"></span></div>
+          <div>คุณใช้งบไปแล้ว 85% ของงบประมาณในหมวด 'อาหาร'</div>
+          <div class="time">2 นาทีที่แล้ว</div>
+        </div>
+        <div class="close-btn">&times;</div>
+      </div>
+
+      <!-- Notification 2: Success -->
+      <div class="notification success">
+        <i class="fa-solid fa-circle-check" style="color: #22c55e;"></i>
+        <div class="content">
+          <div class="title">ทำรายการออมสำเร็จ <span class="green-dot"></span></div>
+          <div>ยินดีด้วย! คุณออมเงินได้ตรงตามเป้าหมายเดือนนี้แล้ว</div>
+          <div class="time">1 ชั่วโมงที่แล้ว</div>
+        </div>
+        <div class="close-btn">&times;</div>
+      </div>
+
+      <!-- Notification 3: Info -->
+      <div class="notification info">
+        <i class="fa-solid fa-bullhorn" style="color: #3b82f6;"></i>
+        <div class="content">
+          <div class="title">สรุปรายการยอดใช้ล่าสุด</div>
+          <div>คุณมีค่าใช้จ่ายที่เพิ่มขึ้นถึง ฿2,450</div>
+          <div class="time">1 นาทีที่แล้ว</div>
+        </div>
+        <div class="close-btn">&times;</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

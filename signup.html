@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; background: linear-gradient(135deg, #2dce89, #38a1f7); margin: 0;
+    }
+    .container {
+      background: #fff; padding: 30px; border-radius: 16px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1); width: 320px; text-align: center;
+    }
+    h2 { margin-bottom: 20px; color: #333; }
+    .input-box { position: relative; margin-bottom: 18px; }
+    .input-box input {
+      width: 100%; padding: 12px 40px 12px 12px; border: 1px solid #ccc;
+      border-radius: 8px; font-size: 14px;
+    }
+    .input-box span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+    .btn {
+      width: 100%; padding: 12px; border: none; border-radius: 8px;
+      background: #2dce89; color: #fff; font-size: 16px; font-weight: bold;
+      cursor: pointer; transition: 0.3s;
+    }
+    .btn:hover { background: #249e68; }
+  </style>
+
+  <!-- ✅ Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyChSRFqpU-n-h0ZwI02Q-9JHFDnO1Ti0Iw",
+      authDomain: "piegraph-9d210.firebaseapp.com",
+      projectId: "piegraph-9d210",
+      storageBucket: "piegraph-9d210.appspot.com", // ✅ แก้เป็น .appspot.com แล้ว
+      messagingSenderId: "966818446316",
+      appId: "1:966818446316:web:8a0c28211d0a20ec081ec9",
+      measurementId: "G-PFJJKT57QH"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <div class="input-box">
+        <input type="text" placeholder="User name" required>
+        <span>👤</span>
+      </div>
+      <div class="input-box">
+        <input type="email" placeholder="Email" required>
+        <span>📧</span>
+      </div>
+      <div class="input-box">
+        <input type="password" placeholder="Password" required>
+        <span>🔒</span>
+      </div>
+      <div class="input-box">
+        <input type="password" placeholder="Confirm password" required>
+        <span>✅</span>
+      </div>
+      <button type="submit" class="btn">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const inputs = document.querySelectorAll("#signupForm input");
+      const username = inputs[0].value;
+      const email = inputs[1].value;
+      const password = inputs[2].value;
+      const confirmPassword = inputs[3].value;
+
+      if (password !== confirmPassword) {
+        alert("❌ รหัสผ่านไม่ตรงกัน");
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          return user.updateProfile({ displayName: username });
+        })
+        .then(() => {
+          alert("✅ ลงทะเบียนสำเร็จ!");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          alert("เกิดข้อผิดพลาด: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>

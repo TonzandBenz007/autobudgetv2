@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>การใช้จ่ายทั้งหมด - รายสัปดาห์</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Prompt', sans-serif; margin:0; background:#f9f9f9; }
+  .header { background: linear-gradient(to right,#d1c9c4,#00e6bf); color:rgb(240, 239, 239); font-size:20px; font-weight:bold; padding:16px; text-align:center; }
+  .tab-switch { display:flex; justify-content:center; margin:10px 0; }
+  .tab { padding:10px 25px; cursor:pointer; font-weight:bold; border-radius:25px; margin:0 5px; color:#ff6a00; background:white; }
+  .active-tab { background:#ff6a00; color:white; }
+  .summary-card { background:white; margin:16px; padding:16px; border-radius:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+  .summary-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .summary-date { font-weight:bold; font-size:18px; }
+  .calendar-button { width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:6px; background:#f3f4f6; cursor:pointer; }
+  .summary-bottom { display:flex; justify-content:space-between; margin-bottom:20px; }
+  .summary-item { text-align:center; }
+  .summary-item div:first-child {color:#555; font-size:14px;}
+  .summary-item div:last-child {font-size:18px; font-weight:bold;}
+  .bar-chart { display:flex; justify-content:space-between; align-items:flex-end; height:100px; margin-bottom:10px; }
+  .bar { width:20px; background:#eee; border-radius:10px; }
+  .bar.filled {background:#22c55e;}
+  .bar-labels { display:flex; justify-content:space-between; font-size:12px; color:#666; }
+  .categories { margin:16px; }
+  .category { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #eee; }
+  .category-left { display:flex; align-items:center; }
+  .icon-circle { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; margin-right:10px; }
+  .green{background:#22c55e;} .orange{background:#facc15;} .blue{background:#60a5fa;}
+  .category-info {font-size:14px; color:#555;} .category-right{text-align:right; font-size:14px;}
+
+  /* Week Picker Popup */
+  #week-picker-overlay { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.3); justify-content:center; align-items:center; z-index:9999; }
+  #week-picker { background:white; border-radius:12px; padding:20px; width:320px; display:flex; flex-direction:column; position:relative; }
+  .month-title { font-weight:bold; text-align:center; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+  .month-title select { font-size:16px; }
+  .calendar { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; margin-bottom:10px; }
+  .calendar div { padding:8px; cursor:pointer; border-radius:6px; }
+  .calendar div:hover { background:#fde68a; }
+  .week-range { background:#a39a93; color:white; border-radius:6px; }
+  .select-week-btn { padding:10px; background:#f97316; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
+  .close-week-picker { position:absolute; top:10px; right:15px; cursor:pointer; font-size:18px; font-weight:bold; }
+</style>
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2dce89;
+    }
+
+    .logo span {
+      color: #1c1c1c;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2dce89;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background-color: #f0f1f3;
+      padding: 12px 20px;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .navbar-item {
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .navbar-item.active {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      color: #2dce89;
+    }
+
+    .transaction-list {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .transaction-list h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 14px 0;
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .transaction-icon {
+      font-size: 20px;
+    }
+
+    .transaction-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+    }
+
+    .income {
+      color: #2dce89;
+    }
+
+    .expense {
+      color: #ff4d4f;
+    }
+
+    .no-transactions {
+      text-align: center;
+      color: #aaa;
+      padding: 40px 0;
+    }
+  </style>
+</head>
+</head>
+<body> 
+<body>
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      padding: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2dce89;
+    }
+
+    .logo span {
+      color: #1c1c1c;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #2dce89;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background-color: #f0f1f3;
+      padding: 12px 20px;
+      border-radius: 12px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .navbar-item {
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .navbar-item.active {
+      background: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      color: #2dce89;
+    }
+
+    .transaction-list {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .transaction-list h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 14px 0;
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .transaction-icon {
+      font-size: 20px;
+    }
+
+    .transaction-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+    }
+
+    .income {
+      color: #2dce89;
+    }
+
+    .expense {
+      color: #ff4d4f;
+    }
+
+    .no-transactions {
+      text-align: center;
+      color: #aaa;
+      padding: 40px 0;
+    }
+  </style>
+<!-- Header -->
+  <div class="header-top">
+    <div class="logo">Auto<span>Budget</span><br><small style="font-size: 14px; font-weight: normal;">จัดการงบประมาณอัตโนมัติ</small></div>
+     <a href="setting.html" class="btn btn-settings" style="text-decoration: none;">
+  ⚙️ ตั้งค่า
+</a>
+</div>
+  </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Menu Hover Effect</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #111; /* navbar background */
+}
+
+nav a {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 1.1em;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #0ef;
+}
+
+nav a span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #0ef;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover span {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="dashboard.html">dashboard<span></span></a>
+    <a href="transactions.html">รายการ<span></span></a>
+    <a href="Expense categories.html">หมวดหมู่ค่าใช้จ่าย<span></span></a>
+    <a href="Monthly analyze.html">การใช้จ่ายในสัปดาห์นี้<span></span></a>
+    <a href="notifications.html" >แจ้งเตือน<span></span></a>
+</nav>
+
+</body>
+</html>
+</nav>
+
+</body>
+</html>
+<body> 
+<div class="header">การใช้จ่ายทั้งหมด</div>
+
+
+<div class="tab-switch">
+  <a href="Spending.html">รายสัปดาห์<span></span></a>
+  <a href="Monthly analyze.html">รายเดือน<span></span></a>
+</div>
+
+<style>
+  .tab-switch a {
+    margin-right: 20px; /* ปรับค่าตามต้องการ */
+    text-decoration: none;
+    color: #0aa4ca;
+  }
+</style>
+
+
+<div class="summary-card">
+  <div class="summary-top">
+    <div class="summary-date" id="selected-week">15-21 กันยายน 2568</div>
+
+    <!-- ปุ่มเลือกวันที่แบบสวย + ไอคอน -->
+    <label class="date-picker">
+      <input type="date" id="date-input">
+    </label>
+  </div>
+</div>
+
+
+  </div>
+
+  <div class="summary-bottom">
+    <div class="summary-item">
+      <div>การใช้จ่ายทั้งหมด</div>
+      <div>฿ 57.00</div>
+    </div>
+    <div class="summary-item">
+      <div>การใช้จ่ายเฉลี่ย</div>
+      <div>฿ 8.14</div>
+    </div>
+  </div>
+
+  <div class="bar-chart">
+    <div class="bar filled" style="height:80px;"></div>
+    <div class="bar filled" style="height:50px;"></div>
+    <div class="bar filled" style="height:70px;"></div>
+    <div class="bar filled" style="height:60px;"></div>
+    <div class="bar filled" style="height:40px;"></div>
+    <div class="bar filled" style="height:30px;"></div>
+    <div class="bar filled" style="height:90px;"></div>
+  </div>
+
+  <div class="bar-labels">
+    <div>15</div>
+    <div>16</div>
+    <div>17</div>
+    <div>18</div>
+    <div>19</div>
+    <div>20</div>
+    <div>21</div>
+  </div>
+</div>
+
+<div class="categories">
+  <div class="category">
+    <div class="category-left">
+      <div class="icon-circle green">🏷️</div>
+      <div class="category-info">ของใช้ทั่วไป<br>2 รายการ</div>
+    </div>
+    <div class="category-right">฿ 57.00<br>100%</div>
+  </div>
+  <div class="category">
+    <div class="category-left">
+      <div class="icon-circle orange">🎭</div>
+      <div class="category-info">ความบันเทิง<br>0 รายการ</div>
+    </div>
+    <div class="category-right">฿ 0.00<br>0%</div>
+  </div>
+  <div class="category">
+    <div class="category-left">
+      <div class="icon-circle blue">✅</div>
+      <div class="category-info">การเงินและประกันภัย<br>0 รายการ</div>
+    </div>
+    <div class="category-right">฿ 0.00<br>0%</div>
+  </div>
+</div>
+
+<!-- Week Picker Popup -->
+<div id="week-picker-overlay">
+  <div id="week-picker">
+    <div class="close-week-picker" onclick="closeWeekPicker()">×</div>
+    <div class="month-title">
+      <span>กันยายน 2568</span>
+      <select id="month-select">
+        <option>กันยายน 2568</option>
+        <option>ตุลาคม 2568</option>
+      </select>
+    </div>
+    <div class="calendar" id="calendar-days">
+      <!-- Days will be generated by JS -->
+    </div>
+    <button class="select-week-btn" onclick="confirmWeek()">เลือก</button>
+  </div>
+</div>
+
+<script>
+const weekPickerOverlay = document.getElementById('week-picker-overlay');
+const selectedWeekDisplay = document.getElementById('selected-week');
+const calendarDays = document.getElementById('calendar-days');
+
+document.getElementById('open-week-picker').addEventListener('click', ()=>{
+  weekPickerOverlay.style.display = 'flex';
+  generateCalendar(9, 2568);
+});
+
+function closeWeekPicker(){ weekPickerOverlay.style.display='none'; }
+
+let selectedWeek = [];
+
+function generateCalendar(month, year){
+  calendarDays.innerHTML = '';
+  const daysInMonth = new Date(year-543, month, 0).getDate(); // ปรับปีไทยเป็นคริสต์
+  for(let i=1;i<=daysInMonth;i++){
+    const dayDiv = document.createElement('div');
+    dayDiv.textContent = i;
+    dayDiv.addEventListener('click', ()=>selectDay(i));
+    calendarDays.appendChild(dayDiv);
+  }
+}
+
+function selectDay(day){
+  const allDays = calendarDays.querySelectorAll('div');
+  allDays.forEach(d=>d.classList.remove('week-range'));
+  let start = day - (day-1)%7;
+  let end = start+6;
+  if(end>calendarDays.children.length) end=calendarDays.children.length;
+  selectedWeek = [start,end];
+  for(let i=start-1;i<end;i++){
+    calendarDays.children[i].classList.add('week-range');
+  }
+}
+
+function confirmWeek(){
+  if(selectedWeek.length==2){
+    selectedWeekDisplay.textContent = selectedWeek[0]+'-'+selectedWeek[1]+' กันยายน 2568';
+    closeWeekPicker();
+  }
+}
+
+// ปิดเมื่อคลิกนอก popup
+weekPickerOverlay.addEventListener('click', (e)=>{ if(e.target===weekPickerOverlay) closeWeekPicker(); });
+</script>
+
+</body>
+</html>
